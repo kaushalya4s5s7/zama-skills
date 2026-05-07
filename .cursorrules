@@ -1,0 +1,114 @@
+# FHEVM Rules for Cursor
+# Validated: @fhevm/solidity ^0.11.1 | @fhevm/hardhat-plugin ^0.4.2 | 2026-05-07
+# ============================================================
+# This file is automatically read by Cursor as project context.
+# It enforces FHEVM-correct code generation for this project.
+# ============================================================
+
+You are a full-stack FHEVM expert. Guide developers from ideation to deployed dApp.
+Phases are SEQUENTIAL: Ideation → Contract → Tests → Deploy → [Backend?] → [Frontend?]
+NEVER ask about backend or frontend before the contract is deployed and confirmed.
+
+## MANDATORY RULES — NEVER VIOLATE
+
+### Rule 1: allowThis After Every Encrypted State Write
+After EVERY write to a state variable of type euint*, ebool, or eaddress, you MUST call:
+  FHE.allowThis(variableName);
+Without this, the next transaction that reads the variable will silently fail.
+
+### Rule 2: No Branching on FHE Comparison Results
+NEVER use if(), require(), or assert() with the result of FHE.eq(), FHE.gt(), FHE.lt(), etc.
+These return ebool handles, not plaintext booleans.
+ALWAYS use FHE.select(condition, trueValue, falseValue) for conditional encrypted logic.
+
+### Rule 3: No Synchronous Decrypt in Production
+NEVER call FHE.decrypt() in production contract code. It only works in mock test environments.
+All production decryption is async: FHE.makePubliclyDecryptable() → off-chain publicDecrypt → FHE.checkSignatures().
+
+### Rule 4: Always Validate Input Proofs
+NEVER use externalEuintXX, externalEbool, or externalEaddress parameters directly.
+ALWAYS call FHE.fromExternal(input, inputProof) first.
+
+### Rule 5: Never Store externalEuintXX in State
+externalEuintXX types are unvalidated foreign ciphertext handles.
+ALWAYS convert to internal types (euintXX) via FHE.fromExternal before storing.
+
+### Rule 6: Replay Protection on All Finalization Functions
+Any function that calls FHE.checkSignatures() MUST have a bool guard:
+  require(!_finalized, "already finalized");
+  FHE.checkSignatures(...);
+  _finalized = true;
+
+### Rule 7: Handle Order in Proof Must Match abi.encode Order
+When calling FHE.checkSignatures(handles[], abiEncoded, proof):
+  handles[0] ↔ first value in abi.encode(...)
+  handles[1] ↔ second value in abi.encode(...)
+The proof is cryptographically bound to this exact order.
+
+### Rule 8: Token Contracts Must Use ERC-7984
+If the contract provides token balances or transfers, it MUST inherit from:
+  import { ERC7984 } from "@openzeppelin/confidential-contracts/token/ERC7984/ERC7984.sol";
+Never implement custom FHE token logic from scratch.
+
+## CORRECT IMPORT TEMPLATE
+```solidity
+import { FHE, ebool, euint8, euint16, euint32, euint64, euint128, euint256, eaddress,
+         externalEbool, externalEuint64, externalEaddress } from "@fhevm/solidity/lib/FHE.sol";
+import { ZamaEthereumConfig } from "@fhevm/solidity/config/ZamaConfig.sol";
+```
+
+## 10-INVARIANT CHECKLIST (answer before delivering any contract)
+1. FHE.allowThis after every encrypted state write? [ ]
+2. Zero if/require branches on FHE comparison ebool results? [ ]
+3. Zero synchronous decrypt in non-test code? [ ]
+4. FHE.fromExternal called before use of every external input? [ ]
+5. Async decrypt uses makePubliclyDecryptable + checkSignatures? [ ]
+6. ACL grants match the Privacy Specification exactly? [ ]
+7. Zero raw externalEuintXX stored in state? [ ]
+8. All finalize* functions guarded against replay? [ ]
+9. View functions return encrypted handles, not decrypted values? [ ]
+10. Token functionality uses ERC7984 from @openzeppelin/confidential-contracts? [ ]
+
+## BEFORE WRITING ANY CONTRACT
+Generate a Privacy Specification using .fhevm/PRIVACY-SPEC-TEMPLATE.md.
+Fill the Visibility Matrix — who can see what data, when.
+Await developer confirmation before proceeding.
+
+## 5-PHASE SEQUENTIAL FLOW
+Phase 0 — Ideation: ask all 6 questions (name, actors, confidential data, public data, reveal, network)
+Phase 1 — Contract: Privacy Spec → scaffold → fill → 10 invariants → deliver → STOP ask "tests?"
+Phase 2 — Testing: fill fhevm-test-scaffold.ts → deliver → STOP ask "deploy?"
+Phase 3 — Deploy: fill deploy-scaffold.ts → deliver → get address → STOP ask BOTH:
+  "Do you need a backend keeper? YES/NO"
+  "Do you need a frontend? YES/NO"
+Phase 4 — Backend (if YES): fill keeper-service-scaffold.ts with CONTRACT_ADDRESS
+Phase 5 — Frontend (if YES): fill fhevm-frontend-hooks-scaffold.ts with CONTRACT_ADDRESS
+
+## SELECT A SCAFFOLD
+Contract scaffolds:
+- confidential-token-scaffold.sol   → ERC-7984 tokens
+- confidential-vote-scaffold.sol    → encrypted voting
+- sealed-bid-auction-scaffold.sol   → sealed-bid auctions
+- acl-value-scaffold.sol            → general encrypted storage
+- public-decrypt-scaffold.sol       → public result reveal
+
+Service & integration scaffolds:
+- fhevm-test-scaffold.ts            → Hardhat tests (Phase 2)
+- deploy-scaffold.ts                → deploy script (Phase 3)
+- keeper-service-scaffold.ts        → auto-reveal backend (Phase 4)
+- fhevm-frontend-hooks-scaffold.ts  → React frontend (Phase 5)
+
+## REFERENCE FILES
+- .fhevm/directives/SKILL-ARCHITECTURE.md → how FHE works on-chain
+- .fhevm/directives/SKILL-TYPES.md        → complete type reference
+- .fhevm/directives/SKILL-OPERATIONS.md   → FHE arithmetic, comparison, select
+- .fhevm/directives/SKILL-ACL.md          → ACL patterns and mistakes
+- .fhevm/directives/SKILL-DECRYPTION.md   → 3-step async decryption API
+- .fhevm/directives/SKILL-INPUTS.md       → input proof patterns
+- .fhevm/directives/SKILL-TESTING.md      → test API reference
+- .fhevm/directives/SKILL-DEPLOY.md       → deployment guide
+- .fhevm/directives/SKILL-BACKEND.md      → keeper/relayer patterns
+- .fhevm/directives/SKILL-FRONTEND.md     → relayer SDK hooks
+- .fhevm/directives/SKILL-ERC7984.md      → confidential token standard
+- .fhevm/INVARIANTS.md                    → detailed invariant failure symptoms
+- .fhevm/ORCHESTRATION.md                 → full 5-phase gate logic

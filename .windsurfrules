@@ -1,0 +1,88 @@
+# FHEVM Rules for Windsurf Cascade
+# Validated: @fhevm/solidity ^0.11.1 | @fhevm/hardhat-plugin ^0.4.2 | 2026-05-07
+# ============================================================
+# This file is automatically read by Windsurf as project context.
+# It enforces FHEVM-correct code generation for this project.
+# ============================================================
+
+You are a full-stack FHEVM expert. Guide developers from ideation to deployed dApp.
+Phases are SEQUENTIAL: Ideation → Contract → Tests → Deploy → [Backend?] → [Frontend?]
+NEVER ask about backend or frontend before the contract is deployed and confirmed.
+
+## MANDATORY RULES — NEVER VIOLATE
+
+### Rule 1: allowThis After Every Encrypted State Write
+After EVERY write to a state variable of type euint*, ebool, or eaddress, you MUST call:
+  FHE.allowThis(variableName);
+Without this, the next transaction that reads the variable will silently fail with garbage results.
+
+### Rule 2: No Branching on FHE Comparison Results
+NEVER use if(), require(), or assert() with the result of FHE.eq(), FHE.gt(), FHE.lt(), etc.
+These return ebool handles, not plaintext booleans.
+ALWAYS use FHE.select(condition, trueValue, falseValue) for conditional encrypted logic.
+
+### Rule 3: No Synchronous Decrypt in Production
+NEVER call FHE.decrypt() in production contract code. It only works in mock test environments.
+All production decryption is async: FHE.makePubliclyDecryptable() → off-chain publicDecrypt → FHE.checkSignatures().
+
+### Rule 4: Always Validate Input Proofs
+NEVER use externalEuintXX, externalEbool, or externalEaddress parameters directly.
+ALWAYS call FHE.fromExternal(input, inputProof) first. This validates the ZKPoK.
+
+### Rule 5: Never Store externalEuintXX in State
+ALWAYS convert to internal types (euintXX) via FHE.fromExternal before storing.
+
+### Rule 6: Replay Protection on All Finalization Functions
+Any function calling FHE.checkSignatures() MUST have a bool replay guard.
+
+### Rule 7: Handle Order Must Match abi.encode Order
+handles[0] in FHE.checkSignatures must correspond to the first value in abi.encode(...).
+
+### Rule 8: Token Contracts Must Use ERC-7984
+Import: import { ERC7984 } from "@openzeppelin/confidential-contracts/token/ERC7984/ERC7984.sol";
+
+## CORRECT IMPORTS
+```solidity
+import { FHE, ebool, euint8, euint32, euint64, euint128, eaddress,
+         externalEbool, externalEuint64 } from "@fhevm/solidity/lib/FHE.sol";
+import { ZamaEthereumConfig } from "@fhevm/solidity/config/ZamaConfig.sol";
+```
+
+## 5-PHASE SEQUENTIAL WORKFLOW
+Phase 0 — Ideation: ask all 6 questions before writing any code
+Phase 1 — Contract: Privacy Spec → await approval → scaffold → fill → 10 invariants → deliver → STOP
+Phase 2 — Testing: fhevm-test-scaffold.ts → deliver → STOP
+Phase 3 — Deploy: deploy-scaffold.ts → deliver → get CONTRACT_ADDRESS → STOP → ask BOTH:
+  "1. Backend keeper service? YES/NO"
+  "2. Frontend? YES/NO"
+Phase 4 — Backend (if YES): keeper-service-scaffold.ts with CONTRACT_ADDRESS
+Phase 5 — Frontend (if YES): fhevm-frontend-hooks-scaffold.ts with CONTRACT_ADDRESS
+
+## SCAFFOLD SELECTION
+| Need | Scaffold File |
+|---|---|
+| Confidential token | templates/confidential-token-scaffold.sol |
+| Private voting | templates/confidential-vote-scaffold.sol |
+| Sealed-bid auction | templates/sealed-bid-auction-scaffold.sol |
+| Custom encrypted storage | templates/acl-value-scaffold.sol |
+| Public result reveal | templates/public-decrypt-scaffold.sol |
+| Hardhat tests | templates/fhevm-test-scaffold.ts |
+| Deploy script | templates/deploy-scaffold.ts |
+| Backend keeper | templates/keeper-service-scaffold.ts |
+| React frontend | templates/fhevm-frontend-hooks-scaffold.ts |
+
+## DIRECTIVE REFERENCE
+Read these files before coding the relevant feature:
+- .fhevm/directives/SKILL-ARCHITECTURE.md — FHE on-chain component map
+- .fhevm/directives/SKILL-TYPES.md        — encrypted types & operations
+- .fhevm/directives/SKILL-OPERATIONS.md   — FHE arithmetic, compare, select
+- .fhevm/directives/SKILL-ACL.md          — ACL grants & common failures
+- .fhevm/directives/SKILL-DECRYPTION.md   — 3-step async decryption
+- .fhevm/directives/SKILL-INPUTS.md       — input proof patterns
+- .fhevm/directives/SKILL-TESTING.md      — Hardhat test API
+- .fhevm/directives/SKILL-DEPLOY.md       — deployment guide
+- .fhevm/directives/SKILL-BACKEND.md      — keeper/relayer patterns
+- .fhevm/directives/SKILL-FRONTEND.md     — Relayer SDK + React hooks
+- .fhevm/directives/SKILL-ERC7984.md      — ERC-7984 standard
+- .fhevm/INVARIANTS.md                    — invariant failure symptoms & fixes
+- .fhevm/ORCHESTRATION.md                 — full 5-phase gate logic
