@@ -1,5 +1,5 @@
 # SKILL-BACKEND — Backend Services (Keeper / Relayer / Bot)
-<!-- Validated: @zama-fhe/relayer-sdk ^0.4.1 | 2026-05-07 -->
+<!-- Validated: @zama-fhe/relayer-sdk ^0.4.3 | 2026-05-07 -->
 
 ## When Do You Need a Backend Service?
 A backend service is needed when your FHEVM contract requires **automated off-chain actions** that users cannot or should not trigger manually:

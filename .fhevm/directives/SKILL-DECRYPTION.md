@@ -1,5 +1,5 @@
 # SKILL-DECRYPTION — Decryption Patterns
-<!-- Validated against: @fhevm/solidity ^0.11.1 | @zama-fhe/relayer-sdk ^0.4.1 | Source: docs.zama.ai/protocol/solidity-guides/smart-contract/oracle | 2026-05-07 -->
+<!-- Validated against: @fhevm/solidity ^0.11.1 | @zama-fhe/relayer-sdk ^0.4.3 | Source: docs.zama.ai/protocol/solidity-guides/smart-contract/oracle | 2026-05-07 -->
 
 ## Core Principle
 **FHEVM does not support synchronous on-chain decryption in production.** Direct decryption is only available in mock/test environments via `fhevm.userDecryptEuint`. In production contracts, all decryption is asynchronous and off-chain.

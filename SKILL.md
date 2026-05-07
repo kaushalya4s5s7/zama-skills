@@ -167,9 +167,17 @@ import { ERC7984 } from "@openzeppelin/confidential-contracts/token/ERC7984/ERC7
 ```
 
 ## Package Install (for developer's project)
+
+> ⚠️ **Version check required**: Before writing any code, verify these exact versions match the developer's `package.json`. 
+
 ```bash
-npm install @fhevm/solidity@^0.11.1 @fhevm/hardhat-plugin@^0.4.2 \
-            @openzeppelin/confidential-contracts @zama-fhe/relayer-sdk@^0.4.1
+npm install @fhevm/solidity@^0.11.1 \
+            @fhevm/hardhat-plugin@^0.4.2 \
+            @openzeppelin/confidential-contracts@^0.4.0 \
+            @zama-fhe/relayer-sdk@^0.4.3
+
+# Dev dependencies (testing)
+npm install --save-dev @fhevm/mock-utils@^0.4.2 hardhat@^3.4.4
 ```
 
 Add to `hardhat.config.ts`:

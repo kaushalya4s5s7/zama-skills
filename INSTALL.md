@@ -23,9 +23,9 @@ This skill system enables AI coding agents (Claude Code, Cursor, Windsurf) to au
 
 ### Step 1: Install Required Packages
 ```bash
-npm install @fhevm/solidity@^0.11.1 @fhevm/hardhat-plugin@^0.4.2 @openzeppelin/confidential-contracts
+npm install @fhevm/solidity@^0.11.1 @fhevm/hardhat-plugin@^0.4.2 @openzeppelin/confidential-contracts@^0.4.0
 npm install --save-dev @fhevm/mock-utils@^0.4.2
-npm install @zama-fhe/relayer-sdk@^0.4.1
+npm install @zama-fhe/relayer-sdk@^0.4.3
 ```
 
 ### Step 2: Configure Hardhat
@@ -116,14 +116,17 @@ npx hardhat test --network sepolia
 
 ---
 
-## Verified Dependency Versions (May 2026)
-| Package | Version |
-|---|---|
-| `@fhevm/solidity` | `^0.11.1` |
-| `@fhevm/hardhat-plugin` | `^0.4.2` |
-| `@fhevm/mock-utils` | `^0.4.2` |
-| `@zama-fhe/relayer-sdk` | `^0.4.1` |
-| `@openzeppelin/confidential-contracts` | `latest` |
+## Verified Dependency Versions (npm verified 2026-05-07)
+| Package | Latest Version | Install Range |
+|---|---|---|
+| `hardhat` | `3.4.4` | `^3.4.4` |
+| `@fhevm/solidity` | `0.11.1` | `^0.11.1` |
+| `@fhevm/hardhat-plugin` | `0.4.2` | `^0.4.2` |
+| `@fhevm/mock-utils` | `0.4.2` | `^0.4.2` |
+| `@openzeppelin/confidential-contracts` | `0.4.0` | `^0.4.0` |
+| `@zama-fhe/relayer-sdk` | `0.4.3` | `^0.4.3` |
+
+> ⚠️ **Common mistake**: Do NOT use `@openzeppelin/confidential-contracts@^0.1.0` — that version doesn't exist on npm. Use `^0.4.0`.
 
 ---
 

@@ -1,5 +1,5 @@
 # SKILL-FRONTEND — Frontend Integration
-<!-- Validated against: @zama-fhe/relayer-sdk ^0.4.1 | Source: docs.zama.ai/protocol/sdk | 2026-05-07 -->
+<!-- Validated against: @zama-fhe/relayer-sdk ^0.4.3 | Source: docs.zama.ai/protocol/sdk | 2026-05-07 -->
 
 ## SDK Import (React / TypeScript)
 ```typescript

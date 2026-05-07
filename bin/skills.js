@@ -155,7 +155,7 @@ async function installSkill(repoArg, branch = "main") {
   console.log();
   console.log(`${c.bold}Next steps:${c.reset}`);
   console.log(`  1. Install FHEVM packages:`);
-  console.log(`     ${c.cyan}npm install @fhevm/solidity@^0.11.1 @fhevm/hardhat-plugin@^0.4.2 @openzeppelin/confidential-contracts @zama-fhe/relayer-sdk@^0.4.1${c.reset}`);
+  console.log(`     ${c.cyan}npm install @fhevm/solidity@^0.11.1 @fhevm/hardhat-plugin@^0.4.2 @openzeppelin/confidential-contracts @zama-fhe/relayer-sdk@^0.4.3${c.reset}`);
   console.log();
   console.log(`  2. Add to hardhat.config.ts:`);
   console.log(`     ${c.cyan}import "@fhevm/hardhat-plugin";${c.reset}`);

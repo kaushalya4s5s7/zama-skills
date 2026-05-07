@@ -55,7 +55,7 @@ templates/
 npm install @fhevm/solidity@^0.11.1 \
             @fhevm/hardhat-plugin@^0.4.2 \
             @openzeppelin/confidential-contracts \
-            @zama-fhe/relayer-sdk@^0.4.1
+            @zama-fhe/relayer-sdk@^0.4.3
 
 # Add to hardhat.config.ts
 # import "@fhevm/hardhat-plugin";
@@ -87,8 +87,8 @@ npx skills add youruser/your-skill-repo    # any GitHub repo
 |---|---|
 | `@fhevm/solidity` | `^0.11.1` |
 | `@fhevm/hardhat-plugin` | `^0.4.2` |
-| `@openzeppelin/confidential-contracts` | `latest` |
-| `@zama-fhe/relayer-sdk` | `^0.4.1` |
+| `@openzeppelin/confidential-contracts` | `0.4.0` |
+| `@zama-fhe/relayer-sdk ^0.4.3` |
 
 ## Docs
 Full documentation: [INSTALL.md](./INSTALL.md)
