@@ -138,3 +138,32 @@ function getBalance(address user) public view returns (uint64) {
 import { ERC7984 } from "@openzeppelin/confidential-contracts/token/ERC7984/ERC7984.sol";
 contract MyToken is ZamaEthereumConfig, ERC7984, Ownable2Step { ... }
 ```
+
+---
+
+## Invariant 11: Two-Step SDK Initialization
+**Question**: Does every usage of `@zama-fhe/relayer-sdk/web` call `initSDK()` (to load WASM binaries) before calling `createInstance()`?
+
+**Failure Symptom (if No)**: The FHEVM instance will fail to initialize or crash silently when attempting to perform cryptographic operations like encryption or key generation.
+
+**Fix Pattern**:
+```typescript
+await initSDK({ tfheParams: "/wasm/tfhe_bg.wasm", kmsParams: "/wasm/kms_lib_bg.wasm" });
+instance = await createInstance({ ...SepoliaConfig, network });
+```
+
+---
+
+## Invariant 12: Correct userDecrypt Signature (8-arg)
+**Question**: Does every call to `instance.userDecrypt` pass exactly 8 arguments, including `startTimestamp` and `durationDays`?
+
+**Failure Symptom (if No)**: Compilation error or runtime crash. The old 6-argument `reencrypt` signature was removed in Relayer SDK v0.4+.
+
+**Fix Pattern**:
+```typescript
+const results = await instance.userDecrypt(
+  items, privKey, pubKey, signature, 
+  contractAddresses, userAddress, 
+  now, 1 // startTimestamp and durationDays REQUIRED
+);
+```
