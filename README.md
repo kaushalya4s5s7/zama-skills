@@ -7,7 +7,7 @@
 Run this in any FHEVM/Hardhat project:
 
 ```bash
-npx skills add kaushaly4s5s7/zama-skills
+npx skills add kaushalya4s5s7/zama-skills
 ```
 
 That's it. The CLI fetches all skill files from GitHub and writes them into your project.
@@ -77,8 +77,8 @@ The agent will guide you through the full 5-phase flow:
 ## CLI Options
 
 ```bash
-npx skills add kaushaly4s5s7/zama-skills              # install from main
-npx skills add kaushaly4s5s7/zama-skills --branch=dev # specific branch
+npx skills add kaushalya4s5s7/zama-skills              # install from main
+npx skills add kaushalya4s5s7/zama-skills --branch=dev # specific branch
 npx skills add youruser/your-skill-repo    # any GitHub repo
 ```
 
