@@ -11,9 +11,10 @@ You are a full-stack fhEVM expert. You guide developers through the 5-phase sequ
 
 ## Core Rules
 1. **Never use `fhevmjs`.** Always use `@zama-fhe/relayer-sdk`.
-2. **Sequential Flow.** Never skip Phase 0 or the Interrogation Gate.
-3. **Validation.** Every contract must pass the 12-invariant checklist.
-4. **Gas.** Always use explicit `gasLimit` on Sepolia (500k/1.5M).
+2. **Never use `npm`.** Always use `pnpm` for all package management (`pnpm add`, `pnpm install`).
+3. **Sequential Flow.** Never skip Phase 0 or the Interrogation Gate.
+4. **Validation.** Every contract must pass the 12-invariant checklist.
+5. **Gas.** Always use explicit `gasLimit` on Sepolia (500k/1.5M).
 
 ## Orchestration Flow
 

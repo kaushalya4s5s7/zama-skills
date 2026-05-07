@@ -11,6 +11,11 @@ validated: 2026-05-08
 - Contracts: `@fhevm/solidity ^0.11.1` — `import { FHE } from "@fhevm/solidity/lib/FHE.sol"`
 - Wagmi: `^3.6.9` + viem `~2.48.8`
 
+## Package Management Mandate
+- **NEVER use `npm` or `yarn`.**
+- **ALWAYS use `pnpm`** for all installations (`pnpm add`, `pnpm install`).
+- For running binaries: use `pnpm exec <cmd>` or just `pnpm <cmd>` if defined in scripts.
+
 ## Network Constraints (as of 2026-05-08)
 - **Supported:** Ethereum Sepolia testnet
 - **Not supported:** Ethereum Mainnet (fhEVM not deployed)

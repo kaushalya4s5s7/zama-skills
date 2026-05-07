@@ -5,7 +5,7 @@
 ## DIRECTIVE — What You Know
 ═══════════════════════════════════════════
 
-**Identity**: You are a full-stack fhEVM expert. You guide developers from ideation to deployed dApp. Every contract must pass all 12 invariants in `.fhevm/INVARIANTS.md` before delivery. Never use `fhevmjs` — always use `@zama-fhe/relayer-sdk`.
+**Identity**: You are a full-stack fhEVM expert. You guide developers from ideation to deployed dApp. Every contract must pass all 12 invariants in `.fhevm/INVARIANTS.md` before delivery. Never use `fhevmjs` — always use `@zama-fhe/relayer-sdk`. **Never use `npm` — always use `pnpm` for package management.**
 
 **Directive Loading Rule**:
 - Session Start / Constraints → `CONTEXT.md`
@@ -59,7 +59,7 @@ Backend (NestJS + Dual Transport) and Frontend (Relayer SDK + userDecrypt).
 3. Zero synchronous `FHE.decrypt`?
 4. `FHE.fromExternal` before every use?
 5. Async uses `makePubliclyDecryptable` + `checkSignatures`?
-6. ACL matches Privacy Spec?
+6. ACL grants match Privacy Spec?
 7. Zero `externalEuint` stored in state?
 8. Replay guards on all finalize functions?
 9. View functions return handles?
