@@ -11,10 +11,22 @@ validated: 2026-05-08
 - Contracts: `@fhevm/solidity ^0.11.1` — `import { FHE } from "@fhevm/solidity/lib/FHE.sol"`
 - Wagmi: `^3.6.9` + viem `~2.48.8`
 
+## Project Segregation Mandate
+- **NEVER** place `package.json`, `hardhat.config.ts`, `test/`, or `scripts/` at the project root.
+- **ALWAYS** segregate into three top-level folders:
+  - `contracts/`: Contains Hardhat environment, `package.json`, `hardhat.config.ts`, `contracts/`, `test/`, and `scripts/`.
+  - `frontend/`: Contains Next.js/React code and `package.json`.
+  - `backend/`: Contains NestJS code and `package.json`.
+
 ## Package Management Mandate
 - **NEVER use `npm` or `yarn`.**
 - **ALWAYS use `pnpm`** for all installations (`pnpm add`, `pnpm install`).
-- For running binaries: use `pnpm exec <cmd>` or just `pnpm <cmd>` if defined in scripts.
+- **Critical for pnpm:** You must manually add the peer dependency `encrypted-types` to avoid `HH411` errors: `pnpm add -D encrypted-types` (run inside `contracts/`).
+
+## TypeScript Configuration (The "Strict" Hurdles)
+- Use `moduleResolution: "node"` in `tsconfig.json`.
+- Add `"ignoreDeprecations": "6.0"` to `compilerOptions` to silence legacy warnings.
+- Explicitly set `"rootDir": "."` to prevent common source directory errors (TS5011).
 
 ## Network Constraints (as of 2026-05-08)
 - **Supported:** Ethereum Sepolia testnet

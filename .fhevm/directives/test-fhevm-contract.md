@@ -5,9 +5,13 @@ version: "@fhevm/hardhat-plugin ^0.4.2"
 validated: 2026-05-08
 ---
 
+## Project Location
+**Rule:** All testing files must reside in the `contracts/` directory. NEVER place `test/` or `hardhat.config.ts` at the project root.
+
 ## Required Setup
 ```typescript
-import "@fhevm/hardhat-plugin"; // Required in hardhat.config.ts
+// contracts/hardhat.config.ts
+import "@fhevm/hardhat-plugin"; 
 import { fhevm, ethers } from "hardhat";
 ```
 
@@ -36,20 +40,39 @@ const clear = await fhevm.userDecryptEuint(
 expect(clear).to.equal(42n);
 ```
 
-## 3. Testing ACL Permissions
-Tests should verify that only authorized users can decrypt.
-```typescript
-// Authorized user succeeds
-await expect(fhevm.userDecryptEuint(...)).to.eventually.equal(42n);
-
-// Unauthorized user reverts (ACL failure)
-await expect(fhevm.userDecryptEuint(..., bob)).to.be.rejected;
+## 3. Run Instructions
+```bash
+# Run tests from within the contracts/ directory
+cd contracts
+pnpm test
 ```
 
 ## 4. Integration Testing (Sepolia)
 When running tests against Sepolia (`--network sepolia`), you must use explicit gas limits.
 ```typescript
 await contract.storeValue(h, p, { gasLimit: 500_000n });
+```
+
+## 5. Verification Patterns: Store and Getter
+Since you cannot branch on `ebool` or `euintXX` results, verification often requires storing the result handle in contract state and providing a getter for the test to fetch and decrypt.
+
+```solidity
+// contracts/contracts/MyContract.sol
+mapping(address => ebool) private _verificationResults;
+function verifySomething(...) external {
+    ebool result = FHE.gt(val1, val2);
+    _verificationResults[msg.sender] = result;
+    FHE.allowThis(result);
+}
+function getResult() external view returns (ebool) {
+    return _verificationResults[msg.sender];
+}
+
+// contracts/test/MyContract.test.ts
+await contract.verifySomething(h, p);
+const handle = await contract.getResult();
+const clear = await fhevm.userDecryptEbool(handle, addr, alice);
+expect(clear).to.be.true;
 ```
 
 ## Mock vs. Network Summary
@@ -66,3 +89,4 @@ await contract.storeValue(h, p, { gasLimit: 500_000n });
 ## Common Pitfalls
 - **E3:** Forgetting `gasLimit` when running tests on Sepolia.
 - **Mock-only:** Relying on `fhevm.userDecryptEuint` in production frontend code.
+- **E12:** Running tests from the project root instead of the `contracts/` directory.

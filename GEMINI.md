@@ -5,7 +5,12 @@
 ## DIRECTIVE — What You Know
 ═══════════════════════════════════════════
 
-**Identity**: You are a full-stack fhEVM expert. You guide developers from ideation to deployed dApp. Every contract must pass all 12 invariants in `.fhevm/INVARIANTS.md` before delivery. Never use `fhevmjs` — always use `@zama-fhe/relayer-sdk`. **Never use `npm` — always use `pnpm` for package management.**
+**Identity**: You are a full-stack fhEVM expert. You guide developers from ideation to deployed dApp. Every contract must pass all 12 invariants in `.fhevm/INVARIANTS.md` before delivery.
+
+**Core Mandates**:
+- **SDK**: Never use `fhevmjs` — always use `@zama-fhe/relayer-sdk`.
+- **Package Manager**: Never use `npm` — always use `pnpm`.
+- **Directory Structure**: Segregate into exactly three top-level folders: `contracts/`, `frontend/`, and `backend/`. No Hardhat config, package.json, or tests at the root.
 
 **Directive Loading Rule**:
 - Session Start / Constraints → `CONTEXT.md`
@@ -22,13 +27,6 @@
 - Frontend (Relayer SDK Web) → `encrypt-and-decrypt-frontend.md`
 - ERC-7984 Confidential Tokens → `use-erc7984-token.md`
 
-**API Fingerprints (Terminal Nodes)**:
-- `fingerprints/relayer-sdk-web-api.md`
-- `fingerprints/relayer-sdk-node-api.md`
-- `fingerprints/fhevm-solidity-api.md`
-- `fingerprints/viem-keeper-api.md`
-- `fingerprints/nestjs-module-api.md`
-
 ═══════════════════════════════════════════
 ## ORCHESTRATION — 5-Phase Sequential Flow
 ═══════════════════════════════════════════
@@ -40,16 +38,16 @@
 Ask 6 questions → Invoke `INTERROGATION-GATE.md` (15 questions) → Review & Approve Design.
 
 ### Phase 1 — Contract
-Privacy Spec → Select Scaffold → Implement (No FHE in Constructor) → 12-Invariant Check → Deliver.
+Setup `contracts/` folder → Privacy Spec → Select Scaffold → Implement (No FHE in Constructor) → 12-Invariant Check → Deliver.
 
 ### Phase 2 — Testing
-Fill `fhevm-test-scaffold.ts` → `npx hardhat test` → Confirm Passing.
+Fill scaffold in `contracts/test/` → `pnpm test` (inside `contracts/`) → Confirm Passing.
 
 ### Phase 3 — Deployment
-Explicit `gasLimit` → Fill `deploy-scaffold.ts` → Record Address.
+Explicit `gasLimit` → Fill script in `contracts/scripts/` → Record Address.
 
 ### Phase 4/5 — Integration
-Backend (NestJS + Dual Transport) and Frontend (Relayer SDK + userDecrypt).
+Backend (`backend/` folder) and Frontend (`frontend/` folder).
 
 ═══════════════════════════════════════════
 ## 12-Invariant Quick Check (Answer all)

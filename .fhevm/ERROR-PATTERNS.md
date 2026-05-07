@@ -13,4 +13,8 @@ validated: 2026-05-08
 | **E5** | Contract deployment or constructor call reverts on Sepolia. | Using `FHE.asEuint64(0)` or other FHE ops in a Solidity constructor. | Use "lazy init" pattern; set encrypted state in the first write tx. |
 | **E6** | `userDecrypt` returns unexpected key or empty result. | Handle hex case mismatch (e.g., `0xabc` vs `0xABC`). | Try exact key, then `.toLowerCase()`, or iterate keys to find match. |
 | **E7** | `inputProof` mismatch or validation revert. | Generating multiple `input.encrypt()` calls for one transaction. | Use `input.add64()` multiple times, then a single `input.encrypt()`. |
-| **E8** | `eaddress` reveal (winner address) fails or is garbled. | `eaddress` bigint not padded to 40 hex characters. | Use `bigInt.toString(16).padStart(40, '0')` then `getAddress`. |
+| **E8** | `eaddress` reveal (winner address) fails or is garbled. | `eaddress` bigint not padded to 40 hex characters. | `bigInt.toString(16).padStart(40, '0')` then `getAddress`. |
+| **E9** | `HH411`: `encrypted-types` is missing. | pnpm's strict structure doesn't hoist peer dependencies. | Run `pnpm add -D encrypted-types` manually. |
+| **E10** | `TS5107/TS5109`: Module resolution deprecation warnings. | Modern TypeScript deprecated `node10` resolution. | Use `moduleResolution: "node"` and `"ignoreDeprecations": "6.0"`. |
+| **E11** | Deployment reverts with `status: 0` on Sepolia. | Incompatible `evmVersion` or unoptimized bytecode on non-FHE nodes. | Set `evmVersion: "paris"` and enable `optimizer` (200 runs) in `hardhat.config.ts`. |
+

@@ -6,7 +6,16 @@ import { HardhatUserConfig } from "hardhat/config";
 dotenv.config();
 
 const config: HardhatUserConfig = {
-  solidity: "0.8.27",
+  solidity: {
+    version: "0.8.27",
+    settings: {
+      optimizer: {
+        enabled: true,
+        runs: 200,
+      },
+      evmVersion: "paris", // REQUIRED for Zama Coprocessor
+    },
+  },
   networks: {
     sepolia: {
       url: process.env.RPC_URL_HTTP || "https://rpc.sepolia.org",
