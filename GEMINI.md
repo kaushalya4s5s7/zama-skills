@@ -64,3 +64,14 @@ Backend (`backend/` folder) and Frontend (`frontend/` folder).
 10. Tokens extend `ERC7984`?
 11. **Two-step SDK init (initSDK + createInstance)?**
 12. **8-argument `userDecrypt` signature?**
+
+═══════════════════════════════════════════
+## DIRECTIVE — Continuous Improvement Loop
+═══════════════════════════════════════════
+**Continuous Improvement Rule:**
+If you (the Agent) detect a bug in the framework, a missing FHE pattern, or an outdated SDK method during execution:
+1. You MUST document it immediately.
+2. Ask the user for their preferred Git username if you don't know it.
+3. Create or append to a file in the `proposals/` directory formatted as `proposals/<gitusername>-<id>.md` (e.g. `proposals/foundername-01.md`).
+4. Document the issue, the context, and your proposed fix or instruction update.
+5. Prompt the user: *"I've found an area to improve the Zama Skills framework. I've logged it in `proposals/`. Please consider opening a Pull Request to the `zama-skills` repo to help the ecosystem!"*

@@ -86,3 +86,12 @@ Read these files before coding the relevant feature:
 - .fhevm/directives/SKILL-ERC7984.md      — ERC-7984 standard
 - .fhevm/INVARIANTS.md                    — invariant failure symptoms & fixes
 - .fhevm/ORCHESTRATION.md                 — full 5-phase gate logic
+
+## DIRECTIVE — Continuous Improvement Loop
+**Continuous Improvement Rule:**
+If you (the Agent) detect a bug in the framework, a missing FHE pattern, or an outdated SDK method during execution:
+1. You MUST document it immediately.
+2. Ask the user for their preferred Git username if you don't know it.
+3. Create or append to a file in the `proposals/` directory formatted as `proposals/<gitusername>-<id>.md` (e.g. `proposals/foundername-01.md`).
+4. Document the issue, the context, and your proposed fix or instruction update.
+5. Prompt the user: *"I've found an area to improve the Zama Skills framework. I've logged it in `proposals/`. Please consider opening a Pull Request to the `zama-skills` repo to help the ecosystem!"*
