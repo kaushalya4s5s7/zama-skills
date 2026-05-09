@@ -73,6 +73,15 @@ Finally, the AI wires up a React Frontend (with `Relayer-SDK/Web`) and a Node.js
 
 ---
 
+## 🧠 The Self-Improving Engine
+
+Zama Skills isn't a static framework—it gets smarter over time. Every AI agent using these skills is instructed with a strict **Continuous Improvement Rule**:
+- If the agent encounters a missing instruction, an outdated FHE pattern, or a general bug during development, it autonomously documents the issue and proposes a fix.
+- These fixes are logged directly into the `proposals/` directory (e.g., `proposals/yourusername-01.md`).
+- You, the developer, are then explicitly prompted to open a Pull Request back to the main `zama-skills` repository, enabling the entire ecosystem to continuously adapt and improve!
+
+---
+
 ## 💎 Optimization Vectors: Why This Framework?
 
 | Vector | Strategy | Benefit |
