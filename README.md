@@ -1,6 +1,6 @@
-# Zama Skills — The FHEVM Agentic Framework
+# Zama Skills — The Agentic Powerpack for FHEVM
 
-> A battle-hardened, multi-phase framework for AI agents to build, test, and deploy production-grade Fully Homomorphic Encryption (FHE) applications on the Zama protocol.
+> A battle-hardened, multi-phase powerpack framework for AI agents to build, test, and deploy production-grade Fully Homomorphic Encryption (FHE) applications on the Zama protocol autonomously.
 
 [![Validated: 2026-05-08](https://img.shields.io/badge/Validated-2026--05--08-brightgreen)](./CONTEXT.md)
 [![SDK: Relayer ^0.4.2](https://img.shields.io/badge/Relayer--SDK-^0.4.2-blue)](./CONTEXT.md)
@@ -8,9 +8,25 @@
 
 ---
 
+## ⚡ The Ultimate Powerpack for Zama Builders
+
+Whether you are a **Founder** rapidly prototyping a new confidential DeFi protocol, or a **Developer** wrestling with the intricacies of Fully Homomorphic Encryption, Zama Skills is your unfair advantage. It transforms generic AI coding assistants (like Cursor, Windsurf, Claude Code, or Gemini) into seasoned FHEVM experts.
+
+### 🏢 For Founders
+- **Idea to DApp in Hours:** Bypass the steep learning curve of FHE math and SDK configurations. Go from a whitepaper concept to a functional, deployed prototype on Sepolia instantly.
+- **Architectural Security by Default:** Don't worry if your AI agent is making privacy mistakes. The framework forces the generation of a strict `Privacy-Spec-Template.md` before a single line of code is written, ensuring data visibility boundaries are perfectly aligned with your business logic.
+- **Production-Level Integrity:** Delivers a fully segregated, full-stack monorepo (`contracts/`, `backend/`, `frontend/`)—not just a collection of fragile scripts.
+
+### 💻 For Developers
+- **Zero Hallucination Guarantee:** Stop fighting AI agents that invent non-existent `fhevmjs` functions. Zama Skills enforces strict usage of the modern `@zama-fhe/relayer-sdk` and strictly bans known anti-patterns (like FHE ops in constructors or sync decryption).
+- **The 12-Invariant Shield:** An automated safety net. Before delivering any smart contract, the agent must autonomously prove it passes 12 critical FHE invariants (e.g., proper ACL usage, `FHE.allowThis` enforcement).
+- **Drop-in Scaffolds:** Instantly bootstrap complex primitives with drop-in templates for Sealed-Bid Auctions, Confidential ERC-7984 Tokens, and Blind Voting systems.
+
+---
+
 ## 🏗️ Architecture: The Three Pillars
 
-Zama Skills is built on a tripartite architecture designed to eliminate the friction between "AI Ideation" and "Production Reality."
+Zama Skills is built on a tripartite architecture designed to eliminate the friction between "AI Ideation" and "Production Reality." Every file we created has a specific significance:
 
 ### 1. Directives (The Specialized Brain)
 A library of granular, context-optimized knowledge files that dictate exact implementation patterns for every FHEVM domain:
@@ -20,7 +36,7 @@ A library of granular, context-optimized knowledge files that dictate exact impl
 - **`manage-gas-limits.md`**: Deterministic gas overrides (500k/1.5M) for Sepolia.
 
 ### 2. Orchestration (The Guardrailed Workflow)
-A strict, **5-Phase Sequential Flow** that prevents agents from skipping critical safety steps:
+A strict sequential flow that prevents agents from skipping critical safety steps:
 - **Phase 0: Ideation & Design Challenge** — Passing the 15-question `INTERROGATION-GATE.md`.
 - **Phase 1: Contract Development** — Privacy Spec generation and 12-Invariant validation.
 - **Phase 2: Rigorous Testing** — Automated Hardhat test scaffolding.
@@ -35,21 +51,29 @@ The framework is consumed natively by:
 
 ---
 
-## 🚀 For Founders & Developers
+## 🔄 The User Flow: How It Works
 
-### Why Founders Choose Zama Skills
-- **Reduced Time-to-Market**: Move from "Idea" to "Deployed Prototype" in hours, not weeks.
-- **Guaranteed Privacy Bounds**: The `Privacy-Spec-Template.md` ensures data visibility is architected before a single line of code is written.
-- **Production-Level Integrity**: Not just "scripts," but a full-stack architecture with proper directory segregation.
+As a user, you simply dictate the goal, and the framework ensures the agent doesn't skip critical steps.
 
-### Why Developers Love It
-- **Zero Hallucinations**: Every instruction is grounded in real-world FHEVM constraints (e.g., "No FHE in Constructors").
-- **Drop-in Scaffolds**: Pre-built templates for Sealed-Bid Auctions, Confidential Tokens (ERC-7984), and Voting.
-- **Continuous Improvement**: The `UPDATE-MAP.md` allows the framework to learn from every session, fixing bugs once and for all.
+### Step 1: Initialization
+You inject the skills into your workspace and prompt your AI:
+> *"I want to build a confidential sealed-bid auction. Start Phase 0."*
+
+### Step 2: Phase 0 — The Interrogation Gate
+The AI refuses to write code immediately. Instead, it asks you exactly **6 critical questions** about your app's mechanics, actor roles, and encrypted state based on the `INTERROGATION-GATE.md` checklist. 
+
+### Step 3: Phase 1 — Contract & Privacy Spec
+Once approved, the AI drafts the `Privacy-Spec-Template.md` detailing exactly who can see what. It then writes the Solidity contract and runs the **12-Invariant Quick Check** to guarantee no FHE rules are violated.
+
+### Step 4: Phase 2 & 3 — Testing & Deployment
+The AI automatically scaffolds Hardhat mock tests for your encrypted logic. Once tests pass, it generates the deterministic deployment scripts with exact gas limits (e.g., `gasLimit: 500000`) required for the Sepolia testnet.
+
+### Step 5: Phase 4 & 5 — Full-Stack Integration
+Finally, the AI wires up a React Frontend (with `Relayer-SDK/Web`) and a Node.js Keeper Backend (with `Relayer-SDK/Node`) to handle async decryptions and proofs seamlessly.
 
 ---
 
-## 💎 Optimization Vectors
+## 💎 Optimization Vectors: Why This Framework?
 
 | Vector | Strategy | Benefit |
 | :--- | :--- | :--- |
@@ -71,10 +95,10 @@ npx skills add kaushalya4s5s7/zama-skills
 
 ### 2. Initialization
 Open your preferred AI agent (Gemini, Claude, Cursor) and say:
-> "I want to build a confidential [Project Name]. Start Phase 0."
+> *"I want to build a confidential [Project Name]. Read the skills and start Phase 0."*
 
 ### 3. The 12-Invariant Shield
-Before the agent hands you a contract, it will perform this check:
+Before the agent hands you a contract, it will perform this check autonomously:
 1. `FHE.allowThis` after every write?
 2. Zero `if/require` on FHE handles?
 3. Zero synchronous `FHE.decrypt`?
@@ -84,12 +108,13 @@ Before the agent hands you a contract, it will perform this check:
 ---
 
 ## 📦 Project Structure
+After a successful run, your repo will look like this:
 ```bash
 /
-├── contracts/        # Hardhat, pnpm, and 12-invariant contracts
-├── frontend/         # Next.js with Relayer-SDK/Web
-├── backend/          # NestJS with Relayer-SDK/Node
-├── .fhevm/           # The Framework Engine (Orchestration/Invariants)
+├── contracts/        # Hardhat, pnpm, and 12-invariant validated contracts
+├── frontend/         # React/Next.js with Relayer-SDK/Web integration
+├── backend/          # Node.js/NestJS Keeper with Relayer-SDK/Node
+├── .fhevm/           # The Framework Engine (Directives/Invariants)
 └── templates/        # Scaffold library
 ```
 
