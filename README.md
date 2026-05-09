@@ -1,95 +1,105 @@
-# FHEVM Skills — AI Agent Skill System for Zama Protocol
+# Zama Skills — The FHEVM Agentic Framework
 
-> Drop-in skill files for Claude Code, Cursor, Windsurf, and Gemini that enable AI agents to correctly build, test, and deploy FHEVM confidential smart contracts — from ideation to production.
+> A battle-hardened, multi-phase framework for AI agents to build, test, and deploy production-grade Fully Homomorphic Encryption (FHE) applications on the Zama protocol.
 
-## Quick Install
+[![Validated: 2026-05-08](https://img.shields.io/badge/Validated-2026--05--08-brightgreen)](./CONTEXT.md)
+[![SDK: Relayer ^0.4.2](https://img.shields.io/badge/Relayer--SDK-^0.4.2-blue)](./CONTEXT.md)
+[![Solidity: 0.11.1](https://img.shields.io/badge/Solidity-^0.11.1-blue)](./CONTEXT.md)
 
-Run this in any FHEVM/Hardhat project:
+---
+
+## 🏗️ Architecture: The Three Pillars
+
+Zama Skills is built on a tripartite architecture designed to eliminate the friction between "AI Ideation" and "Production Reality."
+
+### 1. Directives (The Specialized Brain)
+A library of granular, context-optimized knowledge files that dictate exact implementation patterns for every FHEVM domain:
+- **`choose-encrypted-types.md`**: Precision selection of `ebool`, `euint64`, or `eaddress`.
+- **`apply-fhe-operations.md`**: Oblivious logic via `FHE.select` and `FHE.cmux`.
+- **`grant-acl-access.md`**: Two-phase `FHE.allow` patterns for secure decryption.
+- **`manage-gas-limits.md`**: Deterministic gas overrides (500k/1.5M) for Sepolia.
+
+### 2. Orchestration (The Guardrailed Workflow)
+A strict, **5-Phase Sequential Flow** that prevents agents from skipping critical safety steps:
+- **Phase 0: Ideation & Design Challenge** — Passing the 15-question `INTERROGATION-GATE.md`.
+- **Phase 1: Contract Development** — Privacy Spec generation and 12-Invariant validation.
+- **Phase 2: Rigorous Testing** — Automated Hardhat test scaffolding.
+- **Phase 3: Deterministic Deployment** — Precision script generation for Sepolia.
+- **Phase 4/5: Full-Stack Integration** — NestJS Backend and React Frontend SDK setups.
+
+### 3. Execution (The Multi-Agent Engine)
+The framework is consumed natively by:
+- **Gemini CLI / Claude Code**: Via `GEMINI.md` and `CLAUDE.md`.
+- **Cursor / Windsurf**: Via `.cursorrules` and `.windsurfrules`.
+- **Execution Mandate**: Every agent must pass the **12-Invariant Quick Check** before delivering code.
+
+---
+
+## 🚀 For Founders & Developers
+
+### Why Founders Choose Zama Skills
+- **Reduced Time-to-Market**: Move from "Idea" to "Deployed Prototype" in hours, not weeks.
+- **Guaranteed Privacy Bounds**: The `Privacy-Spec-Template.md` ensures data visibility is architected before a single line of code is written.
+- **Production-Level Integrity**: Not just "scripts," but a full-stack architecture with proper directory segregation.
+
+### Why Developers Love It
+- **Zero Hallucinations**: Every instruction is grounded in real-world FHEVM constraints (e.g., "No FHE in Constructors").
+- **Drop-in Scaffolds**: Pre-built templates for Sealed-Bid Auctions, Confidential Tokens (ERC-7984), and Voting.
+- **Continuous Improvement**: The `UPDATE-MAP.md` allows the framework to learn from every session, fixing bugs once and for all.
+
+---
+
+## 💎 Optimization Vectors
+
+| Vector | Strategy | Benefit |
+| :--- | :--- | :--- |
+| **Token Efficiency** | Granular Directives + Surgical Reads | Minimal context window usage; cheaper and faster AI turns. |
+| **Zero Hallucinations** | 12-Invariant Check + Interrogation Gate | Guaranteed valid FHE logic; no "hallucinated" SDK methods. |
+| **Less Context Loss** | Top-Level Segregation (`contracts/`, `frontend/`) | Agents never get confused between backend/frontend/contract environments. |
+| **Continuous Learning** | `UPDATE-MAP.md` + Version Validation | Framework adapts to protocol updates and newly discovered bugs automatically. |
+
+---
+
+## 🛠️ Quick Start
+
+### 1. Installation
+Run this inside any project to inject the Zama Skills framework:
 
 ```bash
 npx skills add kaushalya4s5s7/zama-skills
 ```
 
-That's it. The CLI fetches all skill files from GitHub and writes them into your project.
+### 2. Initialization
+Open your preferred AI agent (Gemini, Claude, Cursor) and say:
+> "I want to build a confidential [Project Name]. Start Phase 0."
 
-## What Gets Installed
+### 3. The 12-Invariant Shield
+Before the agent hands you a contract, it will perform this check:
+1. `FHE.allowThis` after every write?
+2. Zero `if/require` on FHE handles?
+3. Zero synchronous `FHE.decrypt`?
+4. `FHE.fromExternal` before every use?
+... (and 8 more)
 
-```
-CLAUDE.md                    ← Claude Code reads this automatically
-GEMINI.md                    ← Gemini reads this automatically
-.cursorrules                 ← Cursor reads this automatically
-.windsurfrules               ← Windsurf reads this automatically
-.fhevm/
-  ├── ORCHESTRATION.md       ← Full 5-phase agent workflow
-  ├── INVARIANTS.md          ← 10 safety checks with fix patterns
-  ├── PRIVACY-SPEC-TEMPLATE.md
-  ├── UPDATE-MAP.md
-  └── directives/
-      ├── SKILL-ARCHITECTURE.md
-      ├── SKILL-TYPES.md
-      ├── SKILL-OPERATIONS.md
-      ├── SKILL-ACL.md
-      ├── SKILL-DECRYPTION.md
-      ├── SKILL-INPUTS.md
-      ├── SKILL-TESTING.md
-      ├── SKILL-DEPLOY.md
-      ├── SKILL-BACKEND.md
-      ├── SKILL-FRONTEND.md
-      └── SKILL-ERC7984.md
-templates/
-  ├── confidential-token-scaffold.sol
-  ├── confidential-vote-scaffold.sol
-  ├── sealed-bid-auction-scaffold.sol
-  ├── acl-value-scaffold.sol
-  ├── public-decrypt-scaffold.sol
-  ├── fhevm-test-scaffold.ts
-  ├── deploy-scaffold.ts
-  ├── keeper-service-scaffold.ts
-  └── fhevm-frontend-hooks-scaffold.ts
-```
+---
 
-## After Install
-
+## 📦 Project Structure
 ```bash
-# Install FHEVM packages
-npm install @fhevm/solidity@^0.11.1 \
-            @fhevm/hardhat-plugin@^0.4.2 \
-            @openzeppelin/confidential-contracts \
-            @zama-fhe/relayer-sdk@^0.4.3
-
-# Add to hardhat.config.ts
-# import "@fhevm/hardhat-plugin";
+/
+├── contracts/        # Hardhat, pnpm, and 12-invariant contracts
+├── frontend/         # Next.js with Relayer-SDK/Web
+├── backend/          # NestJS with Relayer-SDK/Node
+├── .fhevm/           # The Framework Engine (Orchestration/Invariants)
+└── templates/        # Scaffold library
 ```
 
-Then open your AI agent and say:
-```
-"Write me a confidential sealed-bid auction using FHEVM"
-```
+---
 
-The agent will guide you through the full 5-phase flow:
-- **Phase 0** — Ideation (asks 6 questions)
-- **Phase 1** — Contract (Privacy Spec → scaffold → 10-invariant check)
-- **Phase 2** — Testing (Hardhat test scaffold)
-- **Phase 3** — Deployment (deploy script → records contract address)
-- **Phase 4** — Backend? (keeper/relayer service — asks after deploy)
-- **Phase 5** — Frontend? (React hooks — asks after deploy)
+## 📜 Documentation
+- [Installation Guide](./INSTALL.md)
+- [Architecture Deep Dive](./.fhevm/directives/understand-fhevm-architecture.md)
+- [Privacy Spec Template](./.fhevm/PRIVACY-SPEC-TEMPLATE.md)
 
-## CLI Options
+---
 
-```bash
-npx skills add kaushalya4s5s7/zama-skills              # install from main
-npx skills add kaushalya4s5s7/zama-skills --branch=dev # specific branch
-npx skills add youruser/your-skill-repo    # any GitHub repo
-```
-
-## Validated Versions
-| Package | Version |
-|---|---|
-| `@fhevm/solidity` | `^0.11.1` |
-| `@fhevm/hardhat-plugin` | `^0.4.2` |
-| `@openzeppelin/confidential-contracts` | `0.4.0` |
-| `@zama-fhe/relayer-sdk ^0.4.3` |
-
-## Docs
-Full documentation: [INSTALL.md](./INSTALL.md)
-Source: [github.com/kaushalchaudhari/zama-skills](https://github.com/kaushalchaudhari/zama-skills)
+Built by developers, for the next generation of privacy-preserving applications on **Zama**.
