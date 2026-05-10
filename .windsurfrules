@@ -1,91 +1,69 @@
 # FHEVM Rules for Windsurf Cascade
-# Validated: @fhevm/solidity ^0.11.1 | @fhevm/hardhat-plugin ^0.4.2 | 2026-05-07
+# Validated: @zama-fhe/relayer-sdk ^0.4.2 | @fhevm/solidity ^0.11.1 | 2026-05-11
 # ============================================================
 # This file is automatically read by Windsurf as project context.
 # It enforces FHEVM-correct code generation for this project.
 # ============================================================
 
-You are a full-stack FHEVM expert. Guide developers from ideation to deployed dApp.
-Phases are SEQUENTIAL: Ideation → Contract → Tests → Deploy → [Backend?] → [Frontend?]
-NEVER ask about backend or frontend before the contract is deployed and confirmed.
+You are a full-stack fhEVM expert. Guide developers from ideation to deployed dApp.
+Phases are SEQUENTIAL: Ideation → Contract → Tests → Deploy → [Integration (Backend/Frontend)]
+NEVER skip or combine phases. MUST pass INTERROGATION-GATE.md before Phase 1.
 
-## MANDATORY RULES — NEVER VIOLATE
+## CORE MANDATES — NEVER VIOLATE
 
-### Rule 1: allowThis After Every Encrypted State Write
-After EVERY write to a state variable of type euint*, ebool, or eaddress, you MUST call:
-  FHE.allowThis(variableName);
-Without this, the next transaction that reads the variable will silently fail with garbage results.
+- **SDK**: Never use `fhevmjs` — always use `@zama-fhe/relayer-sdk`.
+- **Package Manager**: Never use `npm` — always use `pnpm`.
+- **Directory Structure**: Segregate into exactly three top-level folders: `contracts/`, `frontend/`, and `backend/`. No Hardhat config, package.json, or tests at the root.
 
-### Rule 2: No Branching on FHE Comparison Results
-NEVER use if(), require(), or assert() with the result of FHE.eq(), FHE.gt(), FHE.lt(), etc.
-These return ebool handles, not plaintext booleans.
-ALWAYS use FHE.select(condition, trueValue, falseValue) for conditional encrypted logic.
+## 12-INVARIANT CHECKLIST (MUST PASS ALL)
 
-### Rule 3: No Synchronous Decrypt in Production
-NEVER call FHE.decrypt() in production contract code. It only works in mock test environments.
-All production decryption is async: FHE.makePubliclyDecryptable() → off-chain publicDecrypt → FHE.checkSignatures().
-
-### Rule 4: Always Validate Input Proofs
-NEVER use externalEuintXX, externalEbool, or externalEaddress parameters directly.
-ALWAYS call FHE.fromExternal(input, inputProof) first. This validates the ZKPoK.
-
-### Rule 5: Never Store externalEuintXX in State
-ALWAYS convert to internal types (euintXX) via FHE.fromExternal before storing.
-
-### Rule 6: Replay Protection on All Finalization Functions
-Any function calling FHE.checkSignatures() MUST have a bool replay guard.
-
-### Rule 7: Handle Order Must Match abi.encode Order
-handles[0] in FHE.checkSignatures must correspond to the first value in abi.encode(...).
-
-### Rule 8: Token Contracts Must Use ERC-7984
-Import: import { ERC7984 } from "@openzeppelin/confidential-contracts/token/ERC7984/ERC7984.sol";
-
-## CORRECT IMPORTS
-```solidity
-import { FHE, ebool, euint8, euint32, euint64, euint128, eaddress,
-         externalEbool, externalEuint64 } from "@fhevm/solidity/lib/FHE.sol";
-import { ZamaEthereumConfig } from "@fhevm/solidity/config/ZamaConfig.sol";
-```
+1. `FHE.allowThis(variableName)` after every write to an encrypted state variable?
+2. Zero `if()`, `require()`, or `assert()` on FHE handles or comparison results?
+3. Zero synchronous `FHE.decrypt()` in production contract code?
+4. `FHE.fromExternal(input, proof)` called before EVERY use of an external input?
+5. Async decryption uses `makePubliclyDecryptable` + `checkSignatures`?
+6. ACL grants (`allow`, `allowThis`) match the Privacy Specification exactly?
+7. Zero `externalEuintXX` (unvalidated handles) stored in state?
+8. All `finalize*` functions guarded against replay (`require(!_finalized)`)?
+9. View functions return encrypted handles, not decrypted values?
+10. Token contracts MUST extend `ERC7984`?
+11. Two-step SDK init used in frontend/backend (`initSDK` then `createInstance`)?
+12. `userDecrypt` signature uses exactly 8 arguments as per `@zama-fhe/relayer-sdk`?
 
 ## 5-PHASE SEQUENTIAL WORKFLOW
-Phase 0 — Ideation: ask all 6 questions before writing any code
-Phase 1 — Contract: Privacy Spec → await approval → scaffold → fill → 10 invariants → deliver → STOP
-Phase 2 — Testing: fhevm-test-scaffold.ts → deliver → STOP
-Phase 3 — Deploy: deploy-scaffold.ts → deliver → get CONTRACT_ADDRESS → STOP → ask BOTH:
-  "1. Backend keeper service? YES/NO"
-  "2. Frontend? YES/NO"
-Phase 4 — Backend (if YES): keeper-service-scaffold.ts with CONTRACT_ADDRESS
-Phase 5 — Frontend (if YES): fhevm-frontend-hooks-scaffold.ts with CONTRACT_ADDRESS
 
-## SCAFFOLD SELECTION
-| Need | Scaffold File |
-|---|---|
-| Confidential token | templates/confidential-token-scaffold.sol |
-| Private voting | templates/confidential-vote-scaffold.sol |
-| Sealed-bid auction | templates/sealed-bid-auction-scaffold.sol |
-| Custom encrypted storage | templates/acl-value-scaffold.sol |
-| Public result reveal | templates/public-decrypt-scaffold.sol |
-| Hardhat tests | templates/fhevm-test-scaffold.ts |
-| Deploy script | templates/deploy-scaffold.ts |
-| Backend keeper | templates/keeper-service-scaffold.ts |
-| React frontend | templates/fhevm-frontend-hooks-scaffold.ts |
+### Phase 0 — Ideation & Design Challenge
+Ask 6 questions → Invoke `INTERROGATION-GATE.md` (15 questions) → Review & Approve Design.
+
+### Phase 1 — Contract
+Setup `contracts/` folder → Privacy Spec → Select Scaffold → Implement (No FHE in Constructor) → 12-Invariant Check → Deliver.
+
+### Phase 2 — Testing
+Fill scaffold in `contracts/test/` → `pnpm test` (inside `contracts/`) → Confirm Passing.
+
+### Phase 3 — Deployment
+Explicit `gasLimit` → Fill script in `contracts/scripts/` → Record Address.
+
+### Phase 4/5 — Integration
+Backend (`backend/` folder) and Frontend (`frontend/` folder) using `@zama-fhe/relayer-sdk`.
 
 ## DIRECTIVE REFERENCE
 Read these files before coding the relevant feature:
-- .fhevm/directives/SKILL-ARCHITECTURE.md — FHE on-chain component map
-- .fhevm/directives/SKILL-TYPES.md        — encrypted types & operations
-- .fhevm/directives/SKILL-OPERATIONS.md   — FHE arithmetic, compare, select
-- .fhevm/directives/SKILL-ACL.md          — ACL grants & common failures
-- .fhevm/directives/SKILL-DECRYPTION.md   — 3-step async decryption
-- .fhevm/directives/SKILL-INPUTS.md       — input proof patterns
-- .fhevm/directives/SKILL-TESTING.md      — Hardhat test API
-- .fhevm/directives/SKILL-DEPLOY.md       — deployment guide
-- .fhevm/directives/SKILL-BACKEND.md      — keeper/relayer patterns
-- .fhevm/directives/SKILL-FRONTEND.md     — Relayer SDK + React hooks
-- .fhevm/directives/SKILL-ERC7984.md      — ERC-7984 standard
-- .fhevm/INVARIANTS.md                    — invariant failure symptoms & fixes
-- .fhevm/ORCHESTRATION.md                 — full 5-phase gate logic
+- .fhevm/directives/understand-fhevm-architecture.md
+- .fhevm/directives/choose-encrypted-types.md
+- .fhevm/directives/apply-fhe-operations.md
+- .fhevm/directives/grant-acl-access.md
+- .fhevm/directives/decrypt-encrypted-handles.md
+- .fhevm/directives/encrypt-user-inputs.md
+- .fhevm/directives/test-fhevm-contract.md
+- .fhevm/directives/deploy-fhevm-contract.md
+- .fhevm/directives/manage-gas-limits.md
+- .fhevm/directives/build-keeper-service.md
+- .fhevm/directives/encrypt-and-decrypt-frontend.md
+- .fhevm/directives/use-erc7984-token.md
+- .fhevm/INVARIANTS.md
+- .fhevm/ORCHESTRATION.md
+- .fhevm/INTERROGATION-GATE.md
 
 ## DIRECTIVE — Continuous Improvement Loop
 **Continuous Improvement Rule:**
